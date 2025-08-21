@@ -32,6 +32,11 @@ extern "C" {
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 
+#include "FreeRTOS.h"
+#include "task.h"
+#include "semphr.h"
+#include "cmsis_os.h"
+
 /* USER CODE END Includes */
 
 /* Exported types ------------------------------------------------------------*/
@@ -54,11 +59,15 @@ void Error_Handler(void);
 
 /* USER CODE BEGIN EFP */
 
+void SystemClock_Config(void);
+void MX_GPIO_Init(void);
+
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
 
 /* USER CODE BEGIN Private defines */
+
 
 /* USER CODE END Private defines */
 

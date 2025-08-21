@@ -19,10 +19,13 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "cmsis_os.h"
+#include "usart.h"
 #include "gpio.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+
+#include "freertos.h"
 
 /* USER CODE END Includes */
 
@@ -44,6 +47,8 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
+
+extern osSemaphoreId_t ButtonSemaphoreHandle;
 
 /* USER CODE END PV */
 
@@ -88,6 +93,7 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
+  MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
 
   /* USER CODE END 2 */
@@ -154,6 +160,23 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
+
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
+{
+    if (GPIO_Pin == GPIO_PIN_7)
+    {
+        /* FreeRTOS ISR 안전 처리 */
+        BaseType_t xHigherPriorityTaskWoken = pdFALSE;
+
+        /* CubeMX에서 생성된 세마포어 사용 */
+        if (ButtonSemaphoreHandle != NULL) {
+            osSemaphoreRelease(ButtonSemaphoreHandle);
+        }
+
+        /* 필요시 컨텍스트 스위치 요청 */
+        portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
+    }
+}
 
 /* USER CODE END 4 */
 
