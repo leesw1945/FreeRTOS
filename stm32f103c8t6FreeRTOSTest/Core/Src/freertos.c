@@ -116,7 +116,7 @@ void MX_FREERTOS_Init(void) {
 
   /* Create the semaphores(s) */
   /* creation of ButtonSemaphore */
-  ButtonSemaphoreHandle = osSemaphoreNew(1, 1, &ButtonSemaphore_attributes);
+  ButtonSemaphoreHandle = osSemaphoreNew(1, 0, &ButtonSemaphore_attributes);
 
   /* USER CODE BEGIN RTOS_SEMAPHORES */
   /* add semaphores, ... */
@@ -185,7 +185,7 @@ void StartTask02(void *argument)
   /* USER CODE BEGIN StartTask02 */
   uint8_t ledState = 0;
 
-  char buffer[30];
+  char buffer[50];
 	snprintf(buffer, sizeof(buffer), "LED Control Task Started \r\n");
 	HAL_UART_Transmit(&huart1, (uint8_t*)buffer, strlen(buffer), 100);
 
@@ -213,7 +213,6 @@ void StartTask02(void *argument)
       HAL_UART_Transmit(&huart1, (uint8_t*)buffer, strlen(buffer), 100);
     }
     
-    osDelay(500); 
   }
   /* USER CODE END StartTask02 */
 }
@@ -291,7 +290,7 @@ void ButtonTask(void *argument)
           HAL_UART_Transmit(&huart1, (uint8_t*)buffer, strlen(buffer), 100);
         }
     }
-    osDelay(10);
+
   }
   /* USER CODE END ButtonTask */
 }
